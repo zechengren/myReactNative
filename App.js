@@ -12,7 +12,7 @@ const Drawer = createDrawerNavigator();
 export default function App() {
   return (
     <NavigationContainer>
-      <Drawer.Navigator initialRouteName="Home">
+      <Drawer.Navigator initialRouteName="学校要闻">
         <Drawer.Screen name="学校要闻" component={News} />
         <Drawer.Screen name="院系动态" component={Dynamic} />
         <Drawer.Screen name="文章" component={Artical} />

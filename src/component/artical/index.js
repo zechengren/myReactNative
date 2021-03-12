@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-02-16 17:34:17
- * @LastEditTime: 2021-03-11 11:28:22
+ * @LastEditTime: 2021-03-12 14:30:15
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /HelloWorld304/src/component/news/index.js
@@ -14,7 +14,14 @@ import axios from 'axios'
 import MaYuan from '../maYuan'
 
 
-export default function index({ navigation }) {
+export default function index({ navigation, route}) {
+  const api = 'http://www.masu.edu.cn'
+
+  // useEffect(() => {
+  //   console.log(route,'route');
+  //   const { url } = route.params
+  // }, [])
+
   const [htmlContent, setHtmlContent] = useState();
   // const [content, setContent] = useState('')
   // const windowHeight = Dimensions.get("window").height;
@@ -34,12 +41,14 @@ export default function index({ navigation }) {
 
 
   useEffect(() => {
-    axios.get('http://www.masu.edu.cn/2021/0211/c336a40116/page.htm')
+    const { url } = route.params
+    axios.get(`${api}${url}`)
       .then((res) => {
         setHtmlContent(res.data)
       })
   }, [])
   function renderNode(node, index, siblings, parent, defaultRenderer) {
+
     if (node.name) {
       if (node.name == 'h1' && node.attribs && node.attribs.class == 'arti-title') {
         setTitle(node.children[0].data)
@@ -63,9 +72,10 @@ export default function index({ navigation }) {
       }
       if (node.name = 'span' && node.attribs && (node.attribs.style == 'font-weight:normal;font-size:16px;font-family:宋体, simsun;line-height:1.75em;' || node.attribs.style == 'font-size:16px;font-family:宋体, simsun;line-height:1.75em;')) {
         str = str + node.children[0].data
-
+        console.log('pppp');
         if (node.children[0].data.slice(-1) == '。') {
           arr.push(str)
+          console.log(arr,'arr');
           str = ''
         } else if (node.children[0].data.slice(-1) == '）') {
           setWrite(node.children[0].data)
@@ -73,11 +83,12 @@ export default function index({ navigation }) {
       }
 
       if (node.attribs && node.attribs.id == 'bdshare') {
+        console.log(arr,'arr33'); //[]
         setArtical(arr)
       }
       if (node.attribs && node.attribs.style == 'text-align:center;') {
         const a = node.children[0].attribs.src
-        setSrc(`http://www.masu.edu.cn${a}`)
+        setSrc(`${api}${a}`)
       }
 
     }
