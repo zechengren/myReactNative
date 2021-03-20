@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-03-11 10:49:00
- * @LastEditTime: 2021-03-11 16:36:15
+ * @LastEditTime: 2021-03-20 11:08:49
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /HelloWorld304/src/component/maYuan.js
@@ -9,7 +9,6 @@
 import React from 'react'
 import {View, StyleSheet, Image, TouchableOpacity,} from 'react-native'
 export default function index({ openDrawer }) {
-
   return (
     <View style={style.imageBox}>
       <TouchableOpacity style={style.asideBox} onPress={openDrawer}>
