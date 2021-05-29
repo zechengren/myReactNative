@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-03-13 19:55:35
- * @LastEditTime: 2021-03-20 17:09:29
+ * @LastEditTime: 2021-05-29 21:44:56
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /HelloWorld304/src/component/teachActivites.js
@@ -32,30 +32,28 @@ export default function StudyUse({ navigation }) {
   function renderNode(node) {
     if (node.name) {
       if (node.name == 'span' && node.attribs && node.attribs.frag == '标题') {
-        if (node.children[0].data == '产学研用') {
+        if (node.children[0].data == '会议安排') {
           newTitle = 'news_title'
         }
       }
       if (node.name == 'div' && node.attribs && node.attribs.class == newTitle) {
         obj = node.children[0].attribs
-      }
-      if (node.name == 'div' && node.attribs && node.attribs.class == 'news_summary') {
-        const data = node.children[0].data
-        obj.detail = data
         arr.push(obj)
       }
+      // if (node.name == 'div' && node.attribs && node.attribs.class == 'news_summary') {
+      //   const data = node.children[0].data
+      //   obj.detail = data
+      //   arr.push(obj)
+      // }
       if (node.attribs && node.attribs.class == 'footer clearfix') {
         setTitle(arr)
       }
     }
   }
   const jumpArtical = item => {
-    const { title, href } = item
-    if(title.slice(0, 4) == '（图文）') {
-      navigation.navigate('文章', { url: href })
-    } else {
-      navigation.navigate('教研详情', { url: href })
-    }
+    const { href } = item
+
+    navigation.navigate('教研详情', { url: 'error' })
   }
   return (
     <View style={{ flex: 1 }}>
@@ -65,14 +63,14 @@ export default function StudyUse({ navigation }) {
           !animatingVisible &&
             <Fragment>
               <View style={style.titleBox}>
-                   <Text style={style.titleText}>产学研用</Text>
+                   <Text style={style.titleText}>会议安排</Text>
                 </View>
                 <View>
+                  {console.log(title,'tltletle')}
                   {title.map((item,index) => {
                     return (
                       <TouchableOpacity key={index} style={style.bodyBox} onPress={() => jumpArtical(item)}>
                         <Text style={style.bodyText} numberOfLines={1}>{item.title}</Text>
-                        <Text style={style.pText}>{item.detail}</Text>
                       </TouchableOpacity>
                     )
                   })}
@@ -93,7 +91,7 @@ const style = StyleSheet.create({
     lineHeight: 62,
   },
   bodyBox: {
-    height: 130,
+    height: 54,
     borderRadius: 8,
     borderStyle: 'dotted',
     borderBottomWidth: 0.5,

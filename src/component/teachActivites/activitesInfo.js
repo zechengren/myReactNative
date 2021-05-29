@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-03-13 21:58:23
- * @LastEditTime: 2021-03-20 20:02:25
+ * @LastEditTime: 2021-05-29 22:47:54
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /HelloWorld304/src/component/teachActivites/activitesInfo.js
@@ -23,10 +23,21 @@ export default function ActivitesInfo({navigation, route}) {
   const [artical, setArtical] = useState([])
   const [src, setSrc] = useState('')
   const [animatingVisible, setAnimatingVisible] = useState(true)
+  // const [error, setError] = useState(false)
   let empty = false
   let url = ''
+  let error = false
+
   if(route.params) {
-    url = route.params.url
+    if (route.params.url == 'error') {
+      url = route.params.url
+      // setError(true)
+      error = true
+
+    } else {
+      url = route.params.url
+    }
+    // url = route.params.url
   } else {
     empty = true
   }
@@ -48,11 +59,17 @@ export default function ActivitesInfo({navigation, route}) {
     'font-size:14px;padding:0px;color:#646464;background-color:#ffffff;text-indent:2em;line-height:2em;margin-top:0px;margin-bottom:0px;',
     'font-size:14px;text-align:left;line-height:2em;text-indent:2em;',
     'text-align:left;line-height:2em;text-indent:2em;',
+    'padding:0px;color:#646464;font-size:14px;background-color:#ffffff;text-indent:2em;line-height:2em;margin-top:0px;margin-bottom:0px;',
+    'text-align:justify;line-height:1.75em;margin-bottom:0in;',
   ]
   const commonStl = 'line-height:2em;'
+
+  // font-family:宋体, simsun;font-size:18px;text-indent:28px;background-color:#ffffff;
   const commonStArr = [
     'line-height:2em;',
-    'font-family:文泉驛等寬正黑;'
+    'font-size:18px',
+    'font-family:文泉驛等寬正黑;',
+    'font-family:宋体',
   ]
   const commonSlice = 'background-color:#ffffff;'
 
@@ -98,23 +115,28 @@ export default function ActivitesInfo({navigation, route}) {
         a && setSrc(`${api}${a}`)
         }
       }
-
-      if (node.name == 'span' && node.attribs && node.attribs.style && (node.attribs.style.indexOf(commonStl)) !== -1) {
-        if(node.children && Array.isArray(node.children) && node.children[0] && node.children[0].data) {
-          let data = node.children[0].data
-          // if(data.slice(0, 6) == '&nbsp;') {
-          //   str.length != 0 && arr.push(str)
-            // str = ''
-            str += data
-            // console.log(str);
-          //   return
-          // } else {
-          //   str += data
-          // }
+      commonStArr.some(item => {
+        if (node.name == 'span' && node.attribs && node.attribs.style && (node.attribs.style.indexOf(item)) !== -1 ) {
+          if(node.children && Array.isArray(node.children) && node.children[0] && node.children[0].data) {
+            let data = node.children[0].data
+            // if(data.slice(0, 6) == '&nbsp;') {
+            //   str.length != 0 && arr.push(str)
+              // str = ''
+              str += data
+              // console.log(str);
+            //   return
+            // } else {
+            //   str += data
+            // }
+            console.log(str,'strstr')
+            return true
+          }
         }
-      }
+      })
+
       sliceSty.map(item => {
         if(node.name == 'p' && node.attribs && node.attribs.style && node.attribs.style == item) {
+          console.log('ooooooooooooo')
           str.length !== 0 && arr.push(str)
           str = ''
         }
@@ -128,7 +150,7 @@ export default function ActivitesInfo({navigation, route}) {
         arr.push(str)
         const newArr = arr.map(item => item.replace(/&nbsp;/g,''))
         setArtical(newArr)
-        // console.log(newArr);
+        // console.log(newArr,'newArr');
       }
     }
   }
@@ -152,9 +174,9 @@ export default function ActivitesInfo({navigation, route}) {
   return (
     <View style={{ flex: 1, marginBottom: 20 }}>
       <MaYuan openDrawer={openDrawer}></MaYuan>
-
-      {empty && <Image style={style.empty} source={require('../../assets/img/empty.jpg')}></Image>}
-      {!empty &&
+      {error && <Image style={style.error} source={{ uri: 'http://www.masu.edu.cn/_images/error/error.gif' }}></Image>}
+      {!error && empty && <Image style={style.empty} source={require('../../assets/img/empty.jpg')}></Image>}
+      {!error && !empty &&
         <View style={{ flex: 1, paddingLeft: 5, paddingRight: 5 }}>
         {animatingVisible &&<ActivityIndicator style={{ flex: 1 }} size="large" color="#5398e8" animating={animatingVisible} />}
         <HTMLView value={htmlContent} renderNode={renderNode} style={{ display: 'none' }}></HTMLView>
@@ -194,6 +216,10 @@ const style = StyleSheet.create({
   empty: {
     width: '100%',
     height: 300,
+  },
+  error: {
+    width: 250,
+    height: 300
   },
   title: {
     color: '#0e419c',

@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-03-13 19:55:35
- * @LastEditTime: 2021-03-20 16:56:07
+ * @LastEditTime: 2021-05-29 21:37:03
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /HelloWorld304/src/component/teachActivites.js
@@ -18,6 +18,7 @@ export default function TextActivites({ navigation }) {
   const arr = []
   const [animatingVisible, setAnimatingVisible] = useState(true)
   let newTitle = 'news_title'
+  let num = 0
   useEffect(() => {
     animatingVisible || setAnimatingVisible(true)
 
@@ -30,8 +31,11 @@ export default function TextActivites({ navigation }) {
   function renderNode(node) {
     if (node.name) {
       if (node.name == 'div' && node.attribs && node.attribs.class == newTitle) {
-        const obj = node.children[0].attribs
-        arr.push(obj)
+        num++
+        if (num > 3 && num < 10) {
+          const obj = node.children[0].attribs
+          arr.push(obj)
+        }
       }
       if (node.name == 'span' && node.attribs && node.attribs.frag == '标题') {
         if (node.children[0].data == '产学研用') {
